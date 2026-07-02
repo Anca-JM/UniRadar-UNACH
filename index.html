@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UniRadar UNACH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --neon: #39ff14; --cyan: #00ffff; }
+    body { background: radial-gradient(circle at top, #113042 0, #020617 42%, #000 100%); }
+    .radar-grid { background-image: linear-gradient(rgba(57,255,20,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,.06) 1px, transparent 1px); background-size: 38px 38px; }
+    .glass { background: rgba(15, 23, 42, .72); border: 1px solid rgba(0,255,255,.22); box-shadow: 0 0 28px rgba(0,255,255,.08); backdrop-filter: blur(14px); }
+    .pulse-neon { animation: pulseNeon 2s infinite; }
+    @keyframes pulseNeon { 0%,100% { box-shadow:0 0 8px rgba(57,255,20,.45)} 50% {box-shadow:0 0 28px rgba(57,255,20,.9)} }
+    .sweep { transform-origin: center; animation: sweep 3.5s linear infinite; }
+    @keyframes sweep { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 radar-grid">
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    <header class="flex flex-col md:flex-row gap-4 justify-between items-center mb-8">
+      <div class="flex items-center gap-4">
+        <svg width="72" height="72" viewBox="0 0 120 120" class="pulse-neon rounded-full">
+          <circle cx="60" cy="60" r="54" fill="#020617" stroke="#39ff14" stroke-width="2" />
+          <circle cx="60" cy="60" r="35" fill="none" stroke="#00ffff" stroke-width="1.4" opacity=".7" />
+          <circle cx="60" cy="60" r="16" fill="none" stroke="#39ff14" stroke-width="1.4" opacity=".8" />
+          <line class="sweep" x1="60" y1="60" x2="60" y2="8" stroke="#39ff14" stroke-width="3" />
+          <circle cx="60" cy="60" r="4" fill="#00ffff" />
+        </svg>
+        <div>
+          <h1 class="text-3xl md:text-5xl font-black tracking-tight"><span class="text-[#39ff14]">UniRadar</span> UNACH</h1>
+          <p class="text-slate-300">GastroRadar + AcaRadar en tiempo real para el campus.</p>
+        </div>
+      </div>
+      <div id="authBox" class="glass rounded-2xl p-3 w-full md:w-auto"></div>
+    </header>
+
+    <section class="grid lg:grid-cols-3 gap-5 mb-8">
+      <div class="glass rounded-3xl p-5">
+        <p class="text-[#00ffff] text-sm font-bold">Radar activo</p>
+        <h2 class="text-2xl font-black mt-1">Opciones y eventos sin perder tiempo</h2>
+        <p class="text-slate-300 mt-2">Consulta comida, precios y eventos académicos desde una sola pantalla.</p>
+      </div>
+      <div class="glass rounded-3xl p-5">
+        <p class="text-[#39ff14] text-sm font-bold">Seguridad</p>
+        <h2 class="text-2xl font-black mt-1">Credenciales protegidas</h2>
+        <p class="text-slate-300 mt-2">Las notificaciones pasan por backend. Nada de llaves privadas en frontend.</p>
+      </div>
+      <div class="glass rounded-3xl p-5">
+        <p class="text-[#00ffff] text-sm font-bold">Free Tier</p>
+        <h2 class="text-2xl font-black mt-1">Costo operativo cero</h2>
+        <p class="text-slate-300 mt-2">Netlify + Render + Firebase Spark para un MVP universitario.</p>
+      </div>
+    </section>
+
+    <nav class="flex gap-3 mb-5">
+      <button data-tab="gastro" class="tabBtn px-5 py-3 rounded-2xl bg-[#39ff14] text-black font-black">🍽 GastroRadar</button>
+      <button data-tab="aca" class="tabBtn px-5 py-3 rounded-2xl glass font-black">🎓 AcaRadar</button>
+    </nav>
+
+    <section id="gastroPanel" class="grid lg:grid-cols-3 gap-5">
+      <form id="gastroForm" class="glass rounded-3xl p-5 space-y-3 hidden">
+        <h3 class="text-xl font-black text-[#39ff14]">Registrar comida</h3>
+        <input name="name" placeholder="Producto" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="vendor" placeholder="Vendedor/local" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="location" placeholder="Ubicación" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="price" type="number" step="0.01" min="0" max="20" placeholder="Precio" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="category" placeholder="Categoría" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <button class="w-full py-3 rounded-xl bg-[#39ff14] text-black font-black">Guardar</button>
+      </form>
+      <div class="lg:col-span-3 grid md:grid-cols-2 xl:grid-cols-3 gap-4" id="gastroList"></div>
+    </section>
+
+    <section id="acaPanel" class="grid lg:grid-cols-3 gap-5 hidden">
+      <form id="eventForm" class="glass rounded-3xl p-5 space-y-3 hidden">
+        <h3 class="text-xl font-black text-[#00ffff]">Registrar evento</h3>
+        <input name="title" placeholder="Título" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="organizer" placeholder="Organizador" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="location" placeholder="Lugar" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="date" type="date" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="time" type="time" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <textarea name="description" placeholder="Descripción" class="w-full p-3 rounded-xl bg-slate-950 border border-cyan-900" required></textarea>
+        <button class="w-full py-3 rounded-xl bg-[#00ffff] text-black font-black">Guardar</button>
+      </form>
+      <div class="lg:col-span-3 grid md:grid-cols-2 xl:grid-cols-3 gap-4" id="eventList"></div>
+    </section>
+
+    <section class="glass rounded-3xl p-5 mt-8">
+      <h3 class="text-xl font-black text-[#39ff14]">Alertas demo SMS/WhatsApp</h3>
+      <form id="notifyForm" class="grid md:grid-cols-3 gap-3 mt-3">
+        <input name="phone" placeholder="5939XXXXXXXX" class="p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <input name="message" placeholder="Mensaje de alerta" class="p-3 rounded-xl bg-slate-950 border border-cyan-900" required />
+        <button class="py-3 rounded-xl bg-[#39ff14] text-black font-black">Probar alerta segura</button>
+      </form>
+      <p id="notifyResult" class="mt-3 text-sm text-slate-300"></p>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
