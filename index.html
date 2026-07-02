@@ -1,10 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" class="scroll-smooth">
 <head>
-    <title>Mi Web en UniRadar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniRadar UNACH | Tu Campus en Tiempo Real</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a', /* Slate 900 */
+                        card: '#1e293b', /* Slate 800 */
+                        neon: '#39ff14', /* Verde Neón */
+                        electric: '#00ffff', /* Azul Eléctrico */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .radar-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.05); }
+        }
+        .glow-neon { box-shadow: 0 0 10px rgba(57, 255, 20, 0.5); }
+        .glow-electric { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+    </style>
 </head>
-<body>
-    <h1>¡Hola! Esta es mi página web.</h1>
-    <p>Funciona perfectamente.</p>
+<body class="bg-dark text-slate-300 font-sans antialiased min-h-screen">
+
+    <nav class="sticky top-0 z-50 bg-dark/90 backdrop-blur-md border-b border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    
+                    <svg class="h-12 w-12 text-neon radar-pulse" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" stroke-dasharray="10 5"/>
+                        <circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                        <circle cx="50" cy="50" r="15" fill="currentColor" class="text-electric"/>
+                        <path d="M50 50 L95 50" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                            <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="4s" repeatCount="indefinite"/>
+                        </path>
+                    </svg>
+
+                    <h1 class="text-2xl font-bold text-white tracking-wider">Uni<span class="text-neon">Radar</span> <span class="text-xs text-electric font-mono tracking-tighter">UNACH</span></h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#gastro" class="hover:text-neon transition-colors px-3 py-2 rounded-md text-sm font-medium">GastroRadar</a>
+                        <a href="#aca" class="hover:text-electric transition-colors px-3 py-2 rounded-md text-sm font-medium">AcaRadar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-6">
+            Mapeando tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon to-electric">Vida Universitaria</span>
+        </h2>
+        <p class="mt-4 text-xl text-slate-400 max-w-2xl mx-auto">
+            Elimina la fricción. Encuentra comida rápida al mejor precio y no te pierdas ningún evento académico en el campus de la UNACH.
+        </p>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <section id="gastro" class="relative">
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-700 pb-4">
+                <div class="h-3 w-3 rounded-full bg-neon animate-ping"></div>
+                <h3 class="text-3xl font-bold text-white">Gastro<span class="text-neon">Radar</span></h3>
+            </div>
+            <div id="gastro-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <p class="text-slate-500 animate-pulse">Escaneando opciones gastronómicas...</p>
+            </div>
+        </section>
+
+        <section id="aca" class="relative">
+            <div class="flex items-center gap-4 mb-8 border-b border-slate-700 pb-4">
+                <div class="h-3 w-3 rounded-full bg-electric animate-ping"></div>
+                <h3 class="text-3xl font-bold text-white">Aca<span class="text-electric">Radar</span></h3>
+            </div>
+            <div id="aca-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <p class="text-slate-500 animate-pulse">Detectando señales de eventos académicos...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module" src="./app.js"></script>
 </body>
 </html>
