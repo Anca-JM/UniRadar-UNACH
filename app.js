@@ -18,7 +18,7 @@ const firebaseConfig = {
 };
 
 // 2) Cambia esto cuando tengas backend en Render.
-const BACKEND_URL = 'https://TU-BACKEND.onrender.com';
+const BACKEND_URL = 'https://uniradar-unach.onrender.com';
 
 const demoGastro = [
   { name: 'Almuerzo Casero', vendor: 'Doña Mary', location: 'Campus Norte', price: 2.50, category: 'Almuerzo', available: true },
