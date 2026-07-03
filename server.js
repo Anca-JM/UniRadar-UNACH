@@ -4,7 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-
+// En tu frontend, asegúrate de llamar a esta URL
+const API_URL = 'https://uniradar-unach.onrender.com/api/notify';
 const app = express();
 const PORT = Number(process.env.PORT || 10000);
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5500';
